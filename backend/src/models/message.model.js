@@ -1,0 +1,21 @@
+const mongoose = require("mongoose");
+
+const messageSchema = new mongoose.Schema({
+    chat:{
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
+    content:{
+        type: String,
+        required: true
+    },
+    role:{
+        type:String,
+        enum: ["user", "AI"],
+        required: true
+    }
+},{timestamps: true})
+
+const messageModel = mongoose.model("message", messageSchema)
+
+module.exports = messageModel;
