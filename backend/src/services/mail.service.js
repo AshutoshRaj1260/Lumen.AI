@@ -1,13 +1,19 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // Forces SSL/TLS connection
   auth: {
     type: "OAuth2",
     user: process.env.GOOGLE_USER,
     clientId: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+  },
+  tls: {
+    // Prevents Render from blocking the connection due to self-signed cloud certificates
+    rejectUnauthorized: false,
   },
 });
 
