@@ -48,7 +48,7 @@ async function registerController(req, res) {
             </p>
             
             <div style="text-align: center; margin: 30px 0;">
-              <a href="https://lumen-ai-kn51.onrender.com/api/auth/verify-email?token=${emailVerificationToken}" 
+              <a href="${process.env.SITE_URL || 'http://localhost:3000'}/api/auth/verify-email?token=${emailVerificationToken}" 
                  style="background-color: #f97316; background-image: linear-gradient(135deg, #f97316 0%, #dc2626 100%); color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3);">
                 Verify Email Address
               </a>
@@ -56,7 +56,7 @@ async function registerController(req, res) {
             
             <p style="font-size: 14px; color: #666; line-height: 1.5;">
               If the button doesn't work, copy and paste this link into your browser:<br>
-              <span style="color: #f97316;">${`https://lumen-ai-kn51.onrender.com/api/auth/verify-email?token=${emailVerificationToken}`}</span>
+              <span style="color: #f97316;">${`${process.env.SITE_URL || 'http://localhost:3000'}/api/auth/verify-email?token=${emailVerificationToken}`}</span>
             </p>
             
             <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
@@ -160,7 +160,7 @@ async function verifyEmailController(req, res) {
       </p>
 
       <div style="margin: 35px 0;">
-        <a href="http://localhost:5173/login" 
+        <a href="${process.env.SITE_URL || 'http://localhost:5173'}/login" 
            style="background: linear-gradient(135deg, #f97316 0%, #dc2626 100%); background-color: #f97316; color: #ffffff; padding: 14px 35px; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 16px; display: inline-block;">
           Go to Dashboard
         </a>

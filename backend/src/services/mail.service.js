@@ -1,10 +1,7 @@
 const nodemailer = require("nodemailer");
 
-// Provide explicit IPv4 address for smtp.gmail.com to bypass DNS resolution issues on Render
 const transporter = nodemailer.createTransport({
-  host: "142.250.153.109", // known reliable IPv4 address for smtp.gmail.com
-  port: 465,
-  secure: true,
+  service: "gmail",
   auth: {
     type: "OAuth2",
     user: process.env.GOOGLE_USER,
@@ -12,9 +9,6 @@ const transporter = nodemailer.createTransport({
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
   },
-  tls: {
-    rejectUnauthorized: false
-  }
 });
 
 transporter
