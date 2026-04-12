@@ -1,7 +1,10 @@
 const nodemailer = require("nodemailer");
+const dns = require("dns");
+
+// FORCE IPv4: This fixes the "ENETUNREACH 2404:..." IPv6 error on Render
+dns.setDefaultResultOrder("ipv4first");
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
   host: "smtp.gmail.com",
   port: 465,
   secure: true,
