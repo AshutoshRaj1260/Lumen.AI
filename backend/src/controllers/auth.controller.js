@@ -3,96 +3,88 @@ const sendEmail = require("../services/mail.service");
 const jwt = require("jsonwebtoken");
 
 async function registerController(req, res) {
-  const isUserAlreadyExists = await userModel.findOne({
-    $or: [{ username: req.body.username }, { email: req.body.email }],
-  });
-
-  if (isUserAlreadyExists) {
-    return res.status(404).json({
-      message: "Username or Email already exist",
+  try {
+    const isUserAlreadyExists = await userModel.findOne({
+      $or: [{ username: req.body.username }, { email: req.body.email }],
     });
+
+    if (isUserAlreadyExists) {
+      return res.status(404).json({
+        message: "Username or Email already exist",
+      });
+    }
+
+    const user = await userModel.create({
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password,
+    });
+
+    const emailVerificationToken = jwt.sign(
+      {
+        email: user.email,
+      },
+      process.env.JWT_SECRET,
+    );
+
+    try {
+      await sendEmail({
+        to: user.email,
+        subject: "Verify your Lumen.AI account",
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333; border: 1px solid #eee; border-radius: 12px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+              <h1 style="margin: 0; color: #f97316; font-size: 28px;">Lumen AI</h1>
+            </div>
+            
+            <p style="font-size: 16px; line-height: 1.5;">Hi <strong>${user.username}</strong>,</p>
+            
+            <p style="font-size: 16px; line-height: 1.5;">
+              Thank you for joining <strong>Lumen.AI</strong>. We're excited to help you illuminate the web with AI-powered search.
+            </p>
+            
+            <p style="font-size: 16px; line-height: 1.5;">
+              To activate your account and start exploring, please verify your email address:
+            </p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="https://lumen-ai-kn51.onrender.com/api/auth/verify-email?token=${emailVerificationToken}" 
+                 style="background-color: #f97316; background-image: linear-gradient(135deg, #f97316 0%, #dc2626 100%); color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3);">
+                Verify Email Address
+              </a>
+            </div>
+            
+            <p style="font-size: 14px; color: #666; line-height: 1.5;">
+              If the button doesn't work, copy and paste this link into your browser:<br>
+              <span style="color: #f97316;">${`https://lumen-ai-kn51.onrender.com/api/auth/verify-email?token=${emailVerificationToken}`}</span>
+            </p>
+            
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+            
+            <p style="font-size: 12px; color: #999; text-align: center;">
+              If you did not create a Lumen.AI account, you can safely ignore this email.<br>
+              &copy; ${new Date().getFullYear()} Lumen.AI Team
+            </p>
+          </div>
+        `,
+      });
+    } catch (error) {
+      console.error("Failed to send verification email:", error);
+    }
+
+    return res.status(201).json({
+      message: "User registered successfully",
+      success: true,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error("Registration error:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
-
-  const user = await userModel.create({
-    username: req.body.username,
-    email: req.body.email,
-    password: req.body.password,
-  });
-
-  const emailVerificationToken = await jwt.sign(
-    {
-      email: user.email,
-    },
-    process.env.JWT_SECRET,
-  );
-
-try {
-  await sendEmail({
-    to: user.email,
-    subject: "Verify your Lumen.AI account",
-    html: `
-      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333; border: 1px solid #eee; border-radius: 12px;">
-        <div style="text-align: center; margin-bottom: 20px;">
-          <h1 style="margin: 0; color: #f97316; font-size: 28px;">Lumen AI</h1>
-        </div>
-        
-        <p style="font-size: 16px; line-height: 1.5;">Hi <strong>${user.username}</strong>,</p>
-        
-        <p style="font-size: 16px; line-height: 1.5;">
-          Thank you for joining <strong>Lumen.AI</strong>. We're excited to help you illuminate the web with AI-powered search.
-        </p>
-        
-        <p style="font-size: 16px; line-height: 1.5;">
-          To activate your account and start exploring, please verify your email address:
-        </p>
-        
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="https://lumen-ai-kn51.onrender.com/api/auth/verify-email?token=${emailVerificationToken}" 
-             style="background-color: #f97316; background-image: linear-gradient(135deg, #f97316 0%, #dc2626 100%); color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3);">
-            Verify Email Address
-          </a>
-        </div>
-        
-        <p style="font-size: 14px; color: #666; line-height: 1.5;">
-          If the button doesn't work, copy and paste this link into your browser:<br>
-          <span style="color: #f97316;">${`https://lumen-ai-kn51.onrender.com/api/auth/verify-email?token=${emailVerificationToken}`}</span>
-        </p>
-        
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
-        
-        <p style="font-size: 12px; color: #999; text-align: center;">
-          If you did not create a Lumen.AI account, you can safely ignore this email.<br>
-          &copy; ${new Date().getFullYear()} Lumen.AI Team
-        </p>
-      </div>
-    `,
-  });
-} catch (error) {
-  console.error("Failed to send verification email:", error);
-  // Optionally, you could still return success but notify user email failed
-  // Or roll back the user creation
-}
-
-  // await sendEmail({
-  //   to: user.email,
-  //   subject: "Welcome to perplexity",
-  //   html: ` <p>Hi ${user.username},</p>
-  //   <p>Thank you for registering at <strong>Lumen.AI</strong>. We are excited to have you on board!</p>
-  //   <p>To get started, please verify your email address by clicking the link below:</p>
-  //   <a href="http://localhost:3000/api/auth/verify-email?token=${emailVerificationToken}">Verify Email</a>
-  //   <p>If you did not create an account, please ignore this email.</p>
-  //   <p>Best regards, <br> The Perplexity Team</p>`,
-  // });
-
-  return res.status(201).json({
-    message: "User registered successfully",
-    success: true,
-    user: {
-      id: user._id,
-      username: user.username,
-      email: user.email,
-    },
-  });
 }
 
 async function verifyEmailController(req, res) {
