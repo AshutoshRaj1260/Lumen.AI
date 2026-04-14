@@ -38,7 +38,46 @@ An advanced, full-stack conversational AI platform modeled to simulate the fast,
 
 ---
 
-## 🚀 Local Development Setup
+## � Project Structure
+
+The workspace is structured as a monorepo, cleanly separating the client and server environments while organizing features by domain.
+
+```text
+lumen-ai/
+├── backend/                 # Node.js + Express backend
+│   ├── src/
+│   │   ├── config/          # Database connection and environment configurations
+│   │   ├── controllers/     # Request handlers (Auth, Chat)
+│   │   ├── middlewares/     # Express middlewares (Auth protection, Error handling)
+│   │   ├── models/          # Mongoose DB schemas (User, Chat, Message)
+│   │   ├── routes/          # API route definitions
+│   │   ├── services/        # Business logic (AI pipelines, Mail/Resend, Internet Search)
+│   │   ├── sockets/         # Socket.io event handlers for AI stream completions
+│   │   ├── validators/      # Request validation schemas
+│   │   └── app.js           # Express app instance and production static serving
+│   ├── server.js            # Main entry point and HTTP/Socket.io server
+│   └── package.json         # Backend dependencies & scripts
+│
+├── frontend/                # React 19 + Vite frontend
+│   ├── public/              # Static public assets
+│   ├── src/
+│   │   ├── app/             # Application shell, router setup, and Redux store configuration
+│   │   ├── features/        # Feature-based module architecture (Domain Driven Design)
+│   │   │   ├── auth/        # Auth pages, components, hooks, API services, & Redux slice
+│   │   │   ├── chat/        # Chat interface, socket hooks, markdown streaming logic
+│   │   │   ├── profile/     # User profile management UI
+│   │   │   └── shared/      # Reusable UI components (e.g., LumenGlow styling)
+│   │   └── main.jsx         # React DOM rendering entry point
+│   ├── index.html           # Main HTML template
+│   ├── vite.config.js       # Vite bundler configuration
+│   └── package.json         # Frontend dependencies & build scripts
+│
+└── README.md                # Project documentation
+```
+
+---
+
+## �🚀 Local Development Setup
 
 ### Prerequisites
 - Node.js (v18+)
