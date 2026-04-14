@@ -9,8 +9,10 @@ export function useAuth() {
     try {
       dispatch(setLoading(true));
       const response = await register({ email, password, username });
+      return { success: true };
     } catch (err) {
       dispatch(setError(err.response?.data?.message || "Registration failed"));
+      return { success: false };
     } finally {
       dispatch(setLoading(false));
     }
@@ -28,17 +30,24 @@ export function useAuth() {
     }
   }
 
-  async function handleGetMe() {
+  async function handleGetMe(silent = false) {
     try {
-      dispatch(setLoading(true));
+      if (!silent) {
+        dispatch(setLoading(true));
+      }
       const response = await getMe();
       dispatch(setUser(response.user));
     } catch (err) {
-      dispatch(
-        setError(err.response.data.message || "Failed to fetch user details"),
-      );
+      // Only dispatch error if not in silent mode (initial app load)
+      if (!silent) {
+        dispatch(
+          setError(err.response?.data?.message || "Failed to fetch user details"),
+        );
+      }
     } finally {
-      dispatch(setLoading(false));
+      if (!silent) {
+        dispatch(setLoading(false));
+      }
     }
   }
 

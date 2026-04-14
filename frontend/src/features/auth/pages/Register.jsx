@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setError } from "../auth.slice";
 import LumenGlow from "../../shared/components/LumenGlow";
 
 const Register = () => {
@@ -13,13 +14,15 @@ const Register = () => {
 
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const { handleRegister } = useAuth();
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.user);
   const loading = useSelector((state) => state.auth.loading);
+  const backendError = useSelector((state) => state.auth.error);
 
   if (!loading && user) {
     navigate("/");
@@ -72,28 +75,124 @@ const Register = () => {
       return;
     }
 
-    await handleRegister(formData);
+    dispatch(setError(null));
+    const result = await handleRegister(formData);
 
-    navigate("/");
+    if (result?.success) {
+      setIsSuccess(true);
+    }
   };
+
+  const dismissError = () => {
+    dispatch(setError(null));
+  };
+
+  // Auto-dismiss error after 6 seconds
+  useEffect(() => {
+    if (backendError) {
+      const timer = setTimeout(() => {
+        dispatch(setError(null));
+      }, 6000);
+      return () => clearTimeout(timer);
+    }
+  }, [backendError, dispatch]);
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center p-4">
       <LumenGlow />
 
+      {/* Error Banner */}
+      {backendError && (
+        <div
+          className="fixed top-6 left-1/2 z-50 w-[calc(100%-2rem)] max-w-md"
+          style={{ animation: "slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards" }}
+        >
+          <style>{`
+            @keyframes slideIn {
+              from { transform: translate(-50%, -20px); opacity: 0; }
+              to { transform: translate(-50%, 0); opacity: 1; }
+            }
+            @keyframes shrinkProgress {
+              from { width: 100%; }
+              to { width: 0%; }
+            }
+          `}</style>
+          
+          <div className="relative overflow-hidden bg-slate-900/90 backdrop-blur-xl border border-red-500/30 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.5)] p-4 flex items-start gap-4">
+            <div className="absolute inset-0 bg-red-500/5 pointer-events-none"></div>
+            
+            <div className="flex-shrink-0 bg-red-500/10 p-2.5 rounded-xl border border-red-500/20 relative">
+              <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+            </div>
+            
+            <div className="flex-1 mt-0.5 relative min-w-0">
+              <h3 className="text-sm font-semibold text-red-400">Registration Failed</h3>
+              <p className="text-sm text-gray-300 mt-1 break-words leading-relaxed">{backendError}</p>
+            </div>
+
+            <button
+              onClick={dismissError}
+              className="flex-shrink-0 p-1.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 relative mt-0.5 active:scale-95"
+              aria-label="Dismiss error"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            <div 
+              className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-red-600 to-red-400" 
+              style={{ animation: 'shrinkProgress 6s linear forwards' }} 
+            />
+          </div>
+        </div>
+      )}
+
       {/* Content */}
       <div className="w-full max-w-md relative z-10">
         <div className="bg-slate-900/40 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-orange-500/10 hover:border-orange-500/20 transition">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-white mb-2">
-              Create Account
-            </h1>
-            <p className="text-gray-400 text-sm">Join us and get started</p>
-          </div>
+          {isSuccess ? (
+            <div className="text-center py-6" style={{ animation: "fadeIn 0.5s ease-out forwards" }}>
+              <style>{`
+                @keyframes fadeIn {
+                  from { opacity: 0; transform: translateY(10px); }
+                  to { opacity: 1; transform: translateY(0); }
+                }
+              `}</style>
+              
+              <div className="mx-auto w-16 h-16 bg-green-500/10 rounded-2xl border border-green-500/20 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(34,197,94,0.2)]">
+                <svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
+                </svg>
+              </div>
+              
+              <h2 className="text-2xl font-bold text-white mb-3">Check Your Email</h2>
+              <p className="text-gray-400 text-sm leading-relaxed mb-8">
+                We've sent a verification link to <span className="text-orange-400 font-medium">{formData.email}</span>. 
+                Please verify your email address to complete your registration and log in.
+              </p>
+              
+              <button
+                onClick={() => navigate("/login")}
+                className="w-full bg-slate-800 hover:bg-slate-700 text-white font-medium py-3 rounded-lg border border-slate-700 transition duration-200"
+              >
+                Return to Login
+              </button>
+            </div>
+          ) : (
+            <>
+              {/* Header */}
+              <div className="text-center mb-8">
+                <h1 className="text-4xl font-bold text-white mb-2">
+                  Create Account
+                </h1>
+                <p className="text-gray-400 text-sm">Join us and get started</p>
+              </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="space-y-5">
             {/* Username Field */}
             <div className="space-y-2">
               <label
@@ -272,6 +371,8 @@ const Register = () => {
               </a>
             </p>
           </div>
+            </>
+          )}
         </div>
       </div>
     </div>
