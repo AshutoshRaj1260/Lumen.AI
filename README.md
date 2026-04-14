@@ -1,97 +1,115 @@
-# Lumen.AI (Perplexity Clone)
+# Lumen AI
 
 An advanced, full-stack conversational AI platform modeled to simulate the fast, streaming query experiences of Perplexity and ChatGPT. Built securely using the MERN stack with LangChain, Mistral AI, and optimized React/Redux UI to deliver real-time markdown-capable LLM completions over WebSocket streams.
 
-## ✨ Features
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Version](https://img.shields.io/badge/version-1.0.0-green.svg)
+![Status](https://img.shields.io/badge/status-Production%20Ready-success.svg)
+
+## 🌐 Live Application
+- **Website:** [lumen-ai.dev](https://lumen-ai.dev)
+- **Domain Registrar:** Name.com
+- **Hosting:** Deployed on [Render](https://render.com)
+
+## ✨ Core Features
 
 - **Real-Time Streaming Protocol:** Langchain completions streamed chunk-by-chunk natively over Socket.io, eliminating long loading waits.
 - **Deep Redux Toolkit Optimization:** Granularly structured state slicing so only deeply-nested `<OngoingChat />` components re-render during high-frequency token streams (No React DOM freeze-ups!).
 - **Agentic Internet Navigation:** Out-of-the-box support for search engine tools (Tavily).
-- **Authentication & Security:** Cookie-based JWT sessions, secure password hashing, and robust email verification for newly registered accounts using Nodemailer and Google OAuth2.
-- **Single-Server Deployment Architechture:** Production-ready `npm run build` integration so Express.js intelligently serves React's static files with wildcard fallback—bypassing CORS constraints entirely natively!
+- **Authentication & Security:** Cookie-based JWT sessions, secure password hashing, and robust email verification for newly registered accounts using **Resend** for transactional webhooks.
+- **Single-Server Deployment Architecture:** Production-ready backend serves the compiled React application, sharing a single port to bypass CORS boundaries natively and efficiently on Render.
 
 ## 🛠️ Tech Stack
 
 ### Frontend (User Interface)
 - **Framework:** React 19 + Vite
 - **State Management:** Redux Toolkit (`chat.slice.js` / `auth.slice.js`)
-- **Styling:** SCSS + Tailwind CSS + Remix Icons
+- **Styling:** SCSS, Tailwind CSS, Remix Icons
 - **Markdown Handling:** `react-markdown` + `remark-gfm` (GitHub Flavored Markdown)
 
 ### Backend (API & Real-time Connectivity)
-- **Core:** Node.js + Express.js
-- **Database:** MongoDB + Mongoose (NoSQL Schemas)
-- **Authentication & Verification:** `jsonwebtoken`, `bcrypt`, `cookie-parser`, `nodemailer`, Google APIs (OAuth2)
-- **Real-Time Data:** `socket.io` (Hybrid-REST triggers with Socket continuous stream-down)
-- **AI Integrations:** LangChain, `@langchain/mistralai`, Mistral AI (Models)
+- **Core Environment:** Node.js + Express.js
+- **Database:** MongoDB + Mongoose
+- **Authentication:** JWT, bcrypt, cookie-parser
+- **Email Infrastructure:** Resend API
+- **Real-Time Data:** Socket.io (Hybrid-REST triggers with Socket continuous stream)
+- **AI Integrations:** LangChain, `@langchain/mistralai`, Mistral AI
+- **Web Search Provider:** Tavily
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Local Development Setup
 
 ### Prerequisites
 - Node.js (v18+)
-- MongoDB Atlas cluster (or local setup)
-- A Mistral AI (or equivalent Langchain provider) API key
-- (Optional) Tavily Search API key for integrated internet searches.
+- MongoDB Atlas cluster URI (or local setup)
+- Mistral AI API key
+- Resend API key
+- Tavily Search API key (optional)
 
-### 1. Clone the repository
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/your-username/lumen-ai.git
 cd lumen-ai
 ```
 
 ### 2. Environment Variables Setup
-Navigate to the `backend` folder and create a `.env` file identical to the example mapped provided:
+Navigate to the `backend` folder and create a `.env` file:
 ```bash
 cd backend
 cp .env.example .env
 ```
-Fill out the variables listed in your `.env` securely!
+Ensure you provide the following core variables:
+- `MONGO_URI`
+- `RESEND_API_KEY`
+- `JWT_SECRET`
+- `MISTRAL_API_KEY`
+- `SITE_URL=http://localhost:5173`
 
-### 3. Install Dependencies
-You need to install dependencies for both the frontend and backend.
+### 3. Start Development Servers
+**Backend:**
 ```bash
-# Terminal 1: Backend
 cd backend
 npm install
-npm run dev # Or node server.js
+npm run dev 
+# Starts on http://localhost:3000
+```
 
-# Terminal 2: Frontend
+**Frontend:**
+```bash
 cd frontend
 npm install
 npm run dev
+# Starts on http://localhost:5173
 ```
-
-The frontend will run on `http://localhost:5173` and the backend will start its Socket listener and Express APIs on `http://localhost:3000`.
 
 ---
 
 ## 🚢 Production Deployment
 
-The project is highly optimized to run as a single architectural monolithic server, meaning that Node.js will wrap and serve your React code directly—simplifying infrastructure drops and destroying CORS boundaries.
+This application is configured for a monolithic deployment on **Render** utilizing a Node.js web service environment. Node natively hosts the built Vite static files on the same Express instance.
 
-1. Build the Frontend logic using Vite:
-```bash
-cd frontend
-npm install
-npm run build
-```
+### Build Steps
 
-2. Head into the Backend, install dependencies, and start the server matching `production` mode:
-```bash
-cd ../backend
-npm install
-NODE_ENV=production PORT=8080 node server.js
-```
+1. Configure your Render Web Service to point to your repository.
+2. Provide your Name.com domain (`lumen-ai.dev`) in the Render custom domains dashboard.
+3. Configure the following environment variables within the Render dashboard:
+   - `NODE_ENV=production`
+   - `FRONTEND_URL=https://lumen-ai.dev`
+   - `SITE_URL=https://lumen-ai.dev`
+   - Resend, Mistral, and Mongo credentials.
+4. **Build Command:**
+   ```bash
+   cd frontend && npm install && npm run build && cd ../backend && npm install
+   ```
+5. **Start Command:**
+   ```bash
+   cd backend && node server.js
+   ```
 
-### Hosting on Platforms (Render / Heroku / DigitalOcean / VPS)
-All you must provide your hosting platform is your environment variables array, your initial Node build command, and start command:
-- **Build Command:** `cd frontend && npm install && npm run build && cd ../backend && npm install`
-- **Start Command:** `cd backend && node server.js`
-- Make sure to set `NODE_ENV` as `production`.
+Because of the architectural design, the Express server running on port `8080` (or injected `PORT`) will perfectly serve your compiled `./frontend/dist` directory.
 
 ---
 
 ## 📝 License
-This project is for educational and portfolio deployment purposes. Feel free to fork or clone to build your advanced capabilities using LLMs and Mongoose.
+This project is licensed under the MIT License - see the LICENSE file for details.
