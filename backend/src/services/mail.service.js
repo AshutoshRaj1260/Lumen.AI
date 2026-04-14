@@ -1,36 +1,20 @@
-const nodemailer = require("nodemailer");
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    type: "OAuth2",
-    user: process.env.GOOGLE_USER,
-    clientId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-  },
-});
-
-transporter
-  .verify()
-  .then(() => {
-    console.log("Email transporter is ready to send emails");
-  })
-  .catch((err) => {
-    console.log("Email transporter verification failed", err);
-  });
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function sendEmail({ to, subject, html, text }) {
-  const mailOptions = {
-    from: process.env.GOOGLE_USER,
-    to,
-    subject,
-    text,
-    html,
-  };
-
-  const details = await transporter.sendMail(mailOptions);
-  console.log("Email sent:", details);
+  try {
+    const data = await resend.emails.send({
+      from: 'Lumen AI <contact@lumen-ai.dev>', // MUST be your verified domain
+      to: [to],
+      subject: subject,
+      html: html,
+      text: text, 
+    });
+    console.log("Email sent successfully");
+    return data;
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw error;
+  }
 }
-
 module.exports = sendEmail;
