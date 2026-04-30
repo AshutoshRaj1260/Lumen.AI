@@ -5,6 +5,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const chatRouter = require("./routes/chat.route");
 const path = require("path");
+const analyzerRouter = require('./routes/analyzer.route');
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(
 
 app.use("/api/auth", authRouter);
 app.use('/api/chats', chatRouter);
+app.use('/api/analyze', analyzerRouter)
 
 // Serve frontend in production
 if (process.env.NODE_ENV === "production") {

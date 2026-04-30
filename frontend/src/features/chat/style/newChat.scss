@@ -4,18 +4,17 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5rem;
-    margin-top: 1rem;
+    gap: 1rem;
+    // margin-top: 1rem;
 
     @media (max-width: 768px) {
       height: 100%;
-      padding-block: 2rem;
+      padding-block: 1.5rem;
       justify-content: space-between;
-
     }
 
     .header {
-      max-width: 80%;
+      max-width: 70%;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -23,11 +22,15 @@
       gap: 0.5rem;
 
       img {
-        width: 120px;
+        width: 100px;
       }
       h1 {
         font-size: 2rem;
         font-weight: 700;
+
+        @media (max-width: 768px) {
+          font-size: 1.6rem;
+        }
       }
       p {
         font-size: 1rem;
@@ -36,8 +39,8 @@
         @media (max-width: 768px) {
           font-size: 0.9rem;
         }
-        
-        span{
+
+        span {
           @media (max-width: 768px) {
             display: none;
           }
@@ -45,34 +48,36 @@
       }
     }
 
-    .greeting-for-mobile{
+    .greeting-for-mobile {
       display: none;
 
       @media (max-width: 768px) {
         display: block;
       }
-      h2{
+      h2 {
         font-size: 2.2rem;
         font-weight: 700;
         text-align: center;
-        span{
+        span {
           color: #e77423;
         }
       }
     }
 
     .input-container {
-      // background-color: red;
       box-shadow: none;
 
       .input-wrapper {
-        width: 70%;
-        height: 200px;
-        box-shadow: 0px 0px 20px 0px #936652;
+        background-color: #111111;
+        width: 76%;
+        height: 70px;
+        box-shadow: 0px 0px 10px 0px #936652;
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        // gap: 1rem;
         justify-content: center;
+        margin-top: 3rem;
+        border-radius: 1rem;
 
         @media (max-width: 768px) {
           width: 90%;
@@ -80,13 +85,15 @@
 
         form {
           textarea {
-            height: 120px;
+            height: 100%;
+            // padding-block: 1rem;
           }
         }
 
         .btn-wrapper {
           display: flex;
           gap: 1rem;
+          display: none;
 
           .button {
             display: flex;
