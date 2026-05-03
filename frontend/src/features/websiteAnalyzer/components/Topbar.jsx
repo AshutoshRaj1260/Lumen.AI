@@ -10,7 +10,7 @@ import { useAnalyzer } from "../hooks/useAnalyzer";
 import { useSelector } from "react-redux";
 
 const Topbar = () => {
-  const [url, setUrl] = useState("https://lumen-ai.dev/");
+  const [url, setUrl] = useState("");
 
   const { handleAnalyzeWebsite } = useAnalyzer();
 

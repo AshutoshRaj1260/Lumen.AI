@@ -8,6 +8,7 @@ import OngoingChat from "../components/OngoingChat";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { useNavigate } from "react-router";
 import NewChat from "../components/NewChat";
+import PageWrapper from "../../../shared/components/PageWrapper";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ const Dashboard = () => {
   }
 
   return (
-    <>
+    <PageWrapper>
       <main className="app-container">
         <button
           className={`hamburger-btn ${isSidebarOpen ? "open" : "closed"} `}
@@ -113,7 +114,7 @@ const Dashboard = () => {
           <NewChat />
         )}
       </main>
-    </>
+    </PageWrapper>
   );
 };
 

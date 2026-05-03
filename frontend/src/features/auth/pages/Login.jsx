@@ -4,6 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useSelector, useDispatch } from "react-redux";
 import { setError } from "../auth.slice";
 import LumenGlow from "../../shared/components/LumenGlow";
+import { Link } from "react-router";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -313,12 +314,13 @@ const Login = () => {
           <div className="mt-6 text-center">
             <p className="text-gray-400 text-sm">
               New to our platform?{" "}
-              <a
-                href="/register"
-                className="text-orange-500 hover:text-orange-400 font-semibold transition"
-              >
-                Create a new account
-              </a>
+              
+              <Link to='/register' >
+                <span className="text-orange-500 hover:text-orange-400 font-semibold transition">
+                  Create a new account
+                </span>
+              </Link>
+
             </p>
           </div>
         </div>

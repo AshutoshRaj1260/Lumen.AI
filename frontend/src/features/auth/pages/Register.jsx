@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { setError } from "../auth.slice";
 import LumenGlow from "../../shared/components/LumenGlow";
+import { Link } from "react-router";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -363,12 +364,12 @@ const Register = () => {
           <div className="mt-6 text-center">
             <p className="text-gray-400 text-sm">
               Already have an account?{" "}
-              <a
-                href="/login"
-                className="text-orange-500 hover:text-orange-400 font-semibold transition"
-              >
-                Sign in here
-              </a>
+
+              <Link to='/login' >
+                <span className="text-orange-500 hover:text-orange-400 font-semibold transition">
+                  Sign in here
+                </span>
+              </Link>
             </p>
           </div>
             </>

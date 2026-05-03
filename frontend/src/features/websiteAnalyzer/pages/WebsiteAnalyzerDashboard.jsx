@@ -8,9 +8,11 @@ import ConversionUxAudit from "../components/ConversionUxAudit";
 import CriticalWarnings from "../components/CriticalWarnings";
 import ActionableImprovements from "../components/ActionableImprovements";
 import CopyrightStrengths from "../components/CopyrightStrengths";
+import PageWrapper from "../../../shared/components/PageWrapper";
 
 const WebsiteAnalyzerDashboard = () => {
   return (
+    <PageWrapper>
     <div className="flex h-screen bg-[#0a0a0a] text-white font-sans overflow-hidden">
       <Sidebar />
       <main className="flex-1 flex flex-col h-full overflow-hidden relative border-l border-[#222222]">
@@ -35,6 +37,7 @@ const WebsiteAnalyzerDashboard = () => {
         </div>
       </main>
     </div>
+    </PageWrapper>
   );
 };
 
