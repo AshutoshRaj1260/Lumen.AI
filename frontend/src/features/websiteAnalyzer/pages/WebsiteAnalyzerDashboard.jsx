@@ -42,7 +42,7 @@ const WebsiteAnalyzerDashboard = () => {
           <div className="flex-1 overflow-y-auto w-full">
             <div className="flex flex-col lg:flex-row lg:h-full">
               {/* Left side: Live Preview */}
-              <div className="w-full lg:flex-1 h-[300px] lg:h-auto lg:min-h-0 p-4 md:p-6 lg:border-r border-[#222222] lg:overflow-y-auto mb-4 lg:mb-0 shrink-0">
+              <div className="hidden lg:block lg:flex-1 lg:h-auto lg:min-h-0 p-4 md:p-6 lg:border-r border-[#222222] lg:overflow-y-auto mb-4 lg:mb-0 shrink-0">
                 <LivePreview />
               </div>
               

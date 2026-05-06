@@ -13,11 +13,19 @@ async function scrapeWebPage(url) {
       },
     });
 
-    const cleanText = response.data.data.content;
+  const cleanText = response.data?.data?.content;
+
+    if (!cleanText || typeof cleanText !== 'string') {
+      console.log(`[Jina Scraper] No readable text extracted from: ${url}`);
+      return null;
+    }
 
     return cleanText.substring(0, 15000);
+    
   } catch (err) {
-    console.log("Scraping error: " + err);
+
+    const errorMessage = err.response?.data || err.message;
+    console.error(`[Jina Scraper] Error scraping ${url}:`, errorMessage);
 
     return null;
   }
