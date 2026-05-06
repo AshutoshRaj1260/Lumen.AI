@@ -15,7 +15,7 @@ const Sidebar = () => {
     const navigate = useNavigate();
 
   return (
-    <aside className="w-64 flex flex-col bg-[#121212] border-r border-[#222]">
+    <aside className="w-64 h-full flex flex-col bg-[#121212] border-r border-[#222]">
       <div className="p-6">
         <button onClick={()=>{
             navigate('/')
