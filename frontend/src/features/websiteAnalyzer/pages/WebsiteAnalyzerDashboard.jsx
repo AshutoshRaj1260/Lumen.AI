@@ -40,14 +40,14 @@ const WebsiteAnalyzerDashboard = () => {
         <main className="flex-1 flex flex-col h-full overflow-hidden relative md:border-l border-[#222222] w-full">
           <Topbar />
           <div className="flex-1 overflow-y-auto w-full">
-            <div className="flex flex-col lg:flex-row h-full">
+            <div className="flex flex-col lg:flex-row lg:h-full">
               {/* Left side: Live Preview */}
-              <div className="w-full lg:flex-1 p-4 md:p-6 lg:border-r border-[#222222] min-h-0 overflow-y-auto mb-4 lg:mb-0">
+              <div className="w-full lg:flex-1 h-[300px] lg:h-auto lg:min-h-0 p-4 md:p-6 lg:border-r border-[#222222] lg:overflow-y-auto mb-4 lg:mb-0 shrink-0">
                 <LivePreview />
               </div>
               
               {/* Right side: Insights */}
-              <div className="w-full lg:flex-1 p-4 md:p-6 space-y-6 md:space-y-8 min-h-0 overflow-y-auto bg-[#111] pb-24">
+              <div className="w-full lg:flex-1 p-4 md:p-6 space-y-6 md:space-y-8 min-h-0 lg:overflow-y-auto bg-[#111] pb-24">
                 <CoreBusinessIdentity />
                 <SeoContentHealth />
                 <ConversionUxAudit />
