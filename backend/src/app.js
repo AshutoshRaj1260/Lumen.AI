@@ -26,8 +26,7 @@ app.use(
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "/api/auth/google/callback",
-  proxy: process.env.NODE_ENV === 'production',
+  callbackURL: `${process.env.NODE_ENV === 'production' ? 'https://lumen-ai.dev' : 'http://localhost:3000'}/api/auth/google/callback`,
 },(accessToken, refreshToken, profile, done)=>{
 return done(null, profile);
 }))

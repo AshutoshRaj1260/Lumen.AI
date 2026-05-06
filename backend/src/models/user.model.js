@@ -34,6 +34,7 @@ const userSchema = new mongoose.Schema(
         return !this.password;
       },
       unique: true,
+      sparse: true,
     },
   },
   {

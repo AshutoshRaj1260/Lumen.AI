@@ -278,8 +278,15 @@ async function googleAuthController(req, res){
   });
 
   if(!user){
+    // Generate a unique username based on the display name to avoid unique constraints errors
+    const baseUsername = displayName.replace(/\s+/g, '').toLowerCase();
+    const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+    
+    // Fallback to a random username if email prefix could clash
+    const uniqueUsername = `${baseUsername}${randomSuffix}`;
+
     user = await userModel.create({
-      username: displayName,
+      username: uniqueUsername,
       email,
       googleId: id,
       verified: true,
