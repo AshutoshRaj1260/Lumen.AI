@@ -86,48 +86,55 @@ const NewChat = () => {
           </h2>
         </div>
 
-        <section className="tools-container w-full max-w-4xl mx-auto mt-12 px-4 z-10">
+        <section className="tools-container w-full max-w-4xl mx-auto mt-6 md:mt-12 px-4 z-10">
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-md font-semibold text-white">
+            <h3 className="text-sm md:text-md font-semibold text-white">
               Your Intelligent Tools
             </h3>
-            <button className="text-[#fca311] hover:text-[#e59800] flex items-center gap-1 text-sm font-medium transition-colors cursor-pointer">
+            <button className="text-[#fca311] hover:text-[#e59800] flex items-center gap-1 text-xs md:text-sm font-medium transition-colors cursor-pointer">
               View All <RiArrowRightLine size={16} />
             </button>
           </div>
 
           <div className="tools-wrapper grid grid-cols-1 gap-4">
             {/* Website Analyzer Card */}
-            <div className="relative bg-[#111111] border border-white/5 rounded-2xl p-6 sm:p-8 overflow-hidden group hover:border-white/10 transition-colors w-full">
+            <div className="relative bg-[#111111] border border-white/5 rounded-2xl p-4 md:p-8 overflow-hidden group hover:border-white/10 transition-colors w-full flex items-center justify-between md:block">
               {/* Background Watermark Icon */}
               <RiGlobalLine
-                className="absolute -right-10 -top-4 text-white/[0.03] group-hover:text-white/[0.05] transition-colors"
+                className="absolute -right-10 -top-4 text-white/[0.03] group-hover:text-white/[0.05] transition-colors hidden md:block"
                 size={220}
               />
+              <RiGlobalLine
+                className="absolute -right-2 -top-2 text-white/[0.03] group-hover:text-white/[0.05] transition-colors block md:hidden"
+                size={100}
+              />
 
-              <div className="relative z-10">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-[#222222] border border-white/10 flex items-center justify-center text-[#fca311]">
-                    <RiBarChartBoxLine size={24} />
+              <div className="relative z-10 w-full flex flex-row md:flex-col items-center md:items-start justify-between md:justify-start">
+                <div className="flex items-center gap-3 md:gap-4 md:mb-4">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-[#222222] border border-white/10 flex items-center justify-center text-[#fca311]">
+                    <RiBarChartBoxLine size={20} className="md:w-6 md:h-6 shrink-0" />
                   </div>
-                  <h4 className="text-xl font-semibold text-white">
-                    Website Analyzer
-                  </h4>
+                  <div className="flex flex-col">
+                    <h4 className="text-md md:text-xl font-semibold text-white tracking-tight">
+                      Website Analyzer
+                    </h4>
+                    <p className="text-[#a0a0a0] text-[10px] md:hidden">Deep-scan and optimize</p>
+                  </div>
                 </div>
 
-                <p className="text-[#a0a0a0] text-sm md:text-base leading-relaxed max-w-xl mb-8">
+                <p className="hidden md:block text-[#a0a0a0] text-base leading-relaxed max-w-xl mb-8">
                   Get real-time performance, SEO, and accessibility insights for
                   any URL. Leverage our deep-scan engine to optimize your
                   digital presence instantly.
                 </p>
 
-                <div className="flex flex-wrap items-center gap-4">
+                <div className="flex items-center gap-2 md:gap-4 shrink-0">
                   <button onClick={()=>{
                     navigate("/website-analyzer");
-                  }} className="px-6 py-2.5 bg-[#ffba61] hover:bg-[#e5a045] text-black font-semibold rounded-xl transition-colors cursor-pointer">
-                    Analyze Now
+                  }} className="px-3 py-1.5 md:px-6 md:py-2.5 bg-[#ffba61] hover:bg-[#e5a045] text-black font-semibold rounded-lg md:rounded-xl text-xs md:text-base transition-colors cursor-pointer">
+                    Analyze<span className="hidden md:inline"> Now</span>
                   </button>
-                  <button className="px-6 py-2.5 bg-[#151515] border border-white/10 hover:bg-white/5 text-white font-medium rounded-xl transition-colors cursor-pointer">
+                  <button className="hidden md:block px-6 py-2.5 bg-[#151515] border border-white/10 hover:bg-white/5 text-white font-medium rounded-xl text-base transition-colors cursor-pointer">
                     Learn More
                   </button>
                 </div>
