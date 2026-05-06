@@ -99,7 +99,9 @@ const Login = () => {
       {backendError && (
         <div
           className="fixed top-6 left-1/2 z-50 w-[calc(100%-2rem)] max-w-md"
-          style={{ animation: "slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards" }}
+          style={{
+            animation: "slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+          }}
         >
           <style>{`
             @keyframes slideIn {
@@ -111,22 +113,34 @@ const Login = () => {
               to { width: 0%; }
             }
           `}</style>
-          
+
           <div className="relative overflow-hidden bg-slate-900/90 backdrop-blur-xl border border-red-500/30 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.5)] p-4 flex items-start gap-4">
             {/* Subtle red background glow */}
             <div className="absolute inset-0 bg-red-500/5 pointer-events-none"></div>
-            
+
             {/* Icon */}
             <div className="flex-shrink-0 bg-red-500/10 p-2.5 rounded-xl border border-red-500/20 relative">
-              <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              <svg
+                className="w-5 h-5 text-red-500"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clipRule="evenodd"
+                />
               </svg>
             </div>
-            
+
             {/* Content */}
             <div className="flex-1 mt-0.5 relative min-w-0">
-              <h3 className="text-sm font-semibold text-red-400">Authentication Error</h3>
-              <p className="text-sm text-gray-300 mt-1 break-words leading-relaxed">{backendError}</p>
+              <h3 className="text-sm font-semibold text-red-400">
+                Authentication Error
+              </h3>
+              <p className="text-sm text-gray-300 mt-1 break-words leading-relaxed">
+                {backendError}
+              </p>
             </div>
 
             {/* Close Button */}
@@ -135,15 +149,25 @@ const Login = () => {
               className="flex-shrink-0 p-1.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 relative mt-0.5 active:scale-95"
               aria-label="Dismiss error"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
 
             {/* Progress Bar */}
-            <div 
-              className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-red-600 to-red-400" 
-              style={{ animation: 'shrinkProgress 6s linear forwards' }} 
+            <div
+              className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-red-600 to-red-400"
+              style={{ animation: "shrinkProgress 6s linear forwards" }}
             />
           </div>
         </div>
@@ -285,6 +309,9 @@ const Login = () => {
           {/* Social Login Buttons */}
           <div className="space-y-3">
             <button
+              onClick={() => {
+                window.open(`${import.meta.env.PROD ? "" : "http://localhost:3000"}/api/auth/google`, "_self");
+              }}
               type="button"
               className="w-full flex items-center justify-center gap-3 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700 text-white font-medium py-3 rounded-lg transition duration-200"
             >
@@ -314,13 +341,11 @@ const Login = () => {
           <div className="mt-6 text-center">
             <p className="text-gray-400 text-sm">
               New to our platform?{" "}
-              
-              <Link to='/register' >
+              <Link to="/register">
                 <span className="text-orange-500 hover:text-orange-400 font-semibold transition">
                   Create a new account
                 </span>
               </Link>
-
             </p>
           </div>
         </div>

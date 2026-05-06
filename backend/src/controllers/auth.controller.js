@@ -1,3 +1,4 @@
+const passport = require("passport");
 const userModel = require("../models/user.model");
 const sendEmail = require("../services/mail.service");
 const jwt = require("jsonwebtoken");
@@ -266,10 +267,41 @@ async function logoutController(req, res){
   });
 }
 
+async function googleAuthController(req, res){
+  console.log(req.user);
+
+  const {id, displayName, emails} = req.user;
+  const email = emails[0].value;
+
+  let user = await userModel.findOne({
+    email
+  });
+
+  if(!user){
+    user = await userModel.create({
+      username: displayName,
+      email,
+      googleId: id,
+      verified: true,
+    })
+  }
+
+  const token = jwt.sign({
+    email: user.email,
+  }, process.env.JWT_SECRET, {expiresIn: "7d"});
+  
+  res.cookie("token", token);
+
+  res.redirect(`${process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5173'}/`);
+
+
+}
+
 module.exports = {
   registerController,
   verifyEmailController,
   loginController,
   getMeController,
-  logoutController
+  logoutController,
+  googleAuthController,
 };

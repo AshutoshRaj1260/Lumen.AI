@@ -6,9 +6,12 @@ const morgan = require("morgan");
 const chatRouter = require("./routes/chat.route");
 const path = require("path");
 const analyzerRouter = require('./routes/analyzer.route');
+const passport = require("passport");
+const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
 
 const app = express();
 
+app.use(passport.initialize());
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
@@ -19,6 +22,14 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
+
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: "/api/auth/google/callback",
+},(accessToken, refreshToken, profile, done)=>{
+return done(null, profile);
+}))
 
 app.use("/api/auth", authRouter);
 app.use('/api/chats', chatRouter);

@@ -335,6 +335,9 @@ const Register = () => {
           {/* Social Login Buttons */}
           <div className="space-y-3">
             <button
+              onClick={() => {
+                window.open(`${import.meta.env.PROD ? "" : "http://localhost:3000"}/api/auth/google`, "_self");
+              }}
               type="button"
               className="w-full flex items-center justify-center gap-3 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700 text-white font-medium py-3 rounded-lg transition duration-200"
             >
